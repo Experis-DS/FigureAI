@@ -1,0 +1,55 @@
+/* ============================================================
+   EXPERIS BRAND TOKENS  —  branded-microsite-kit
+   Drop this :root block into any page, or copy the values into
+   the template's existing :root. These are the single source of
+   truth for color across the microsite.
+   ============================================================ */
+
+:root{
+  /* ---- Core brand ---- */
+  --blue:      #1100FF;   /* Experis Blue. LOGO + primary accent ONLY — use sparingly, not for large fills */
+
+  /* ---- Violet family (primary UI accent range) ---- */
+  --violet:    #5C4BB9;   /* primary violet — gradients, headings accents */
+  --violet-lt: #736BDE;   /* lighter violet — gradient partner, hovers */
+  --violet-soft:#9E94FA;  /* soft violet — subtle backgrounds, borders */
+
+  /* ---- Blue family (secondary accent range) ---- */
+  --blue2:     #3893CD;   /* mid blue — gradient partner for violet */
+  --blue-lt:   #56BDED;   /* light blue — highlights, value numbers */
+
+  /* ---- Neutrals / ink ---- */
+  --ink:       #282A32;   /* primary text */
+  --gray:      #67696F;   /* secondary text */
+  --gray-lt:   #EFEFEF;   /* light fills */
+  --line:      #E7E6F2;   /* hairline borders, dividers */
+  --frame:     #161535;   /* deep indigo — dark frame / deck shell */
+
+  /* ---- Accent ---- */
+  --green:     #4FA85C;   /* positive / success */
+
+  /* ---- Surfaces & effects (glassmorphism) ---- */
+  --glass:      rgba(255,255,255,.93);  /* frosted light card surface */
+  --glass-dark: rgba(26,22,46,.55);     /* frosted dark surface */
+  --shadow:     0 30px 70px rgba(20,14,50,.45);  /* signature elevated card shadow */
+}
+
+/* ============================================================
+   TYPOGRAPHY
+   Font stack (system-based, no web-font download required):
+     font-family:"Segoe UI", Helvetica, Arial, sans-serif;
+   Weights used: 400 (body), 600/700 (emphasis), 800 (display/headlines).
+
+   Type scale (approx, px):
+     Cover headline ........ 54   weight 800   letter-spacing -1.5
+     Slide H1 .............. 37   weight 800   letter-spacing -1
+     Lead / intro .......... 16   weight 400
+     Body / card text ...... 13.5–15  weight 400
+     Eyebrow / kicker ...... 11–12.5  weight 700–800  letter-spacing +1.5–3  UPPERCASE
+     Big stat number ....... 24–30  weight 800
+
+   Signature gradient (headlines / numbers):
+     background:linear-gradient(120deg,var(--blue),var(--violet-lt));
+     -webkit-background-clip:text; background-clip:text;
+     -webkit-text-fill-color:transparent;
+   ============================================================ */
