@@ -19,8 +19,16 @@
  */
 const fs = require('fs');
 const path = require('path');
+const { execSync } = require('child_process');
 
 const ROOT = __dirname;
+
+// Best-effort git facts so the draft stamp advances with every commit/build.
+// Silently degrades to '' when not a git repo (e.g. the master template folder).
+function git(cmd) {
+  try { return execSync('git ' + cmd, { cwd: ROOT, stdio: ['ignore', 'pipe', 'ignore'] }).toString().trim(); }
+  catch (e) { return ''; }
+}
 const args = Object.fromEntries(
   process.argv.slice(2).map(a => {
     const m = a.match(/^--([^=]+)=?(.*)$/);
@@ -79,6 +87,11 @@ if (config.baseUrl) {
 }
 html = html.replace(/const PASSWORD="[^"]*";/, `const PASSWORD="${(config.password || 'CHANGEME').replace(/"/g, '\\"')}";`);
 
+// ---- build facts (advance every commit/build) ----
+const builtAt = new Date().toISOString();
+const buildNum = git('rev-list --count HEAD');   // monotonic commit count
+const sha = git('rev-parse --short HEAD');        // short commit hash
+
 // ---- state config injected for the runtime ----
 const runtime = {
   state,
@@ -86,6 +99,9 @@ const runtime = {
   created: version.created,
   released: version.released,
   deckId: config.deckId,
+  builtAt,
+  build: buildNum || null,
+  sha: sha || null,
 };
 
 const headInject = state === 'draft'
@@ -97,7 +113,8 @@ if (state === 'draft') {
   bodyInject += `<script>window.__REVIEW_COMMENTS__=${JSON.stringify(reviewComments)};</script>\n`;
   if (firebaseConfig) bodyInject += `<script>window.__FIREBASE__=${JSON.stringify(firebaseConfig)};</script>\n`;
   bodyInject += `<div class="deck-draft-ribbon" aria-hidden="true">DRAFT</div>\n`;
-  bodyInject += `<div class="deck-version-badge">DRAFT · v${version.version} · ${fmtDate(version.created)}</div>\n`;
+  const stamp = `v${version.version}` + (buildNum ? ` · #${buildNum}` : '') + ` · ${fmtDate(builtAt)}` + (sha ? ` · ${sha}` : '');
+  bodyInject += `<div class="deck-version-badge"><span class="dc-dot"></span>Draft<b>${stamp}</b></div>\n`;
   bodyInject += `<!-- BUILD:comment-layer -->\n<script>\n${commentsJs}\n</script>\n`;
 }
 

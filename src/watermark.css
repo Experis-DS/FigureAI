@@ -1,33 +1,45 @@
 /* Draft-only chrome. Injected by build.js into <head> when state === "draft".
-   Published builds never receive this. */
+   Published builds never receive this.
+   Design intent: restrained, editorial — muted graphite surfaces, a single
+   understated amber status keyline, fine letter-spaced type. No bright fills. */
 
-/* Diagonal corner ribbon, top-right, non-interactive. */
+/* Corner status ribbon, top-right, non-interactive. */
 .deck-draft-ribbon{
-  position:fixed; top:22px; right:-58px; z-index:9998;
+  position:fixed; top:19px; right:-54px; z-index:9998;
   transform:rotate(45deg);
-  background:repeating-linear-gradient(45deg,#E4572E,#E4572E 12px,#c8481f 12px,#c8481f 24px);
-  color:#fff; font:800 13px/1 "Segoe UI",Helvetica,Arial,sans-serif;
-  letter-spacing:.22em; text-transform:uppercase;
-  padding:8px 70px; box-shadow:0 6px 18px rgba(0,0,0,.35);
+  background:#17162a; color:#E7E5F2;
+  border-top:1px solid rgba(255,255,255,.10);
+  border-bottom:1px solid rgba(201,162,39,.55);   /* muted amber = "draft" status cue */
+  font:600 10px/1 "Segoe UI",Helvetica,Arial,sans-serif;
+  letter-spacing:.34em; text-transform:uppercase; text-indent:.34em;
+  padding:7px 62px; box-shadow:0 10px 26px rgba(6,4,20,.42);
   pointer-events:none; user-select:none;
 }
 
-/* Small version stamp, bottom-left. */
+/* Version / build stamp, bottom-left. */
 .deck-version-badge{
-  position:fixed; bottom:14px; left:14px; z-index:9998;
-  background:rgba(228,87,46,.95); color:#fff;
-  font:700 11px/1 "Segoe UI",Helvetica,Arial,sans-serif;
-  letter-spacing:.06em; padding:6px 10px; border-radius:6px;
-  box-shadow:0 4px 14px rgba(0,0,0,.3); pointer-events:none; user-select:none;
+  position:fixed; bottom:16px; left:16px; z-index:9998;
+  display:inline-flex; align-items:center; gap:9px;
+  background:rgba(20,19,42,.86); color:#B9B5D4;
+  border:1px solid rgba(255,255,255,.12); border-radius:9px;
+  font:600 10.5px/1 "Segoe UI",Helvetica,Arial,sans-serif;
+  letter-spacing:.14em; text-transform:uppercase; padding:8px 12px;
+  -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px);
+  box-shadow:0 8px 22px rgba(6,4,20,.34); pointer-events:none; user-select:none;
 }
+.deck-version-badge .dc-dot{
+  width:6px; height:6px; border-radius:50%; background:#C9A227; flex:0 0 auto;
+  box-shadow:0 0 0 3px rgba(201,162,39,.16);
+}
+.deck-version-badge b{ color:#F2F1FA; font-weight:700; letter-spacing:.06em; }
 
-/* Faint repeated "DRAFT" wash across the stage so screenshots read as drafts. */
+/* Very faint neutral wash so exported screenshots still read as drafts. */
 .stage-wrap::before{
   content:""; position:fixed; inset:0; z-index:1; pointer-events:none;
   background-image:url("data:image/svg+xml;utf8,\
-<svg xmlns='http://www.w3.org/2000/svg' width='420' height='260'>\
-<text x='0' y='140' transform='rotate(-24 0 140)' fill='rgba(228,87,46,0.06)' \
-font-family='Segoe UI, Helvetica, Arial, sans-serif' font-size='60' font-weight='800' \
-letter-spacing='8'>DRAFT</text></svg>");
+<svg xmlns='http://www.w3.org/2000/svg' width='520' height='320'>\
+<text x='0' y='180' transform='rotate(-24 0 180)' fill='rgba(150,150,180,0.035)' \
+font-family='Segoe UI, Helvetica, Arial, sans-serif' font-size='58' font-weight='700' \
+letter-spacing='14'>DRAFT</text></svg>");
   background-repeat:repeat;
 }

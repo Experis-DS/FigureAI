@@ -140,7 +140,7 @@
     var me = getUser(), newest = null;
     Object.keys(ids).forEach(function (id) { if (!(id in seenMsgIds) && ids[id].author && ids[id].author !== me) newest = ids[id]; });
     seenMsgIds = ids;
-    if (newest) toast("💬 New comment from " + newest.author + (newest.slide ? " · " + newest.slide : ""));
+    if (newest) toast("New comment from " + newest.author + (newest.slide ? " · " + newest.slide : ""));
   }
 
   // ---------- anchoring (slide + component path) ----------
@@ -187,15 +187,25 @@
 
   function el(tag, cls, html) { var e = document.createElement(tag); if (cls) e.className = cls; if (html != null) e.innerHTML = html; return e; }
 
+  // shared inline icons (thin-stroke, no emoji)
+  var BUBBLE = "<svg viewBox='0 0 24 24'><path d='M21 15a2 2 0 0 1-2 2H8l-4 4V5a2 2 0 0 1 2-2h13a2 2 0 0 1 2 2z'/></svg>";
+  var LOC = "<svg class='dc-locicon' viewBox='0 0 24 24'><path d='M12 21s-6-5.3-6-10a6 6 0 0 1 12 0c0 4.7-6 10-6 10z'/><circle cx='12' cy='11' r='2.2'/></svg>";
+
   function injectStyles() {
     var css = ""
-      + ".dc-fab{position:fixed;right:20px;bottom:20px;z-index:10000;background:#5C4BB9;color:#fff;border:none;border-radius:26px;height:48px;padding:0 18px;font:700 14px/1 'Segoe UI',Arial,sans-serif;box-shadow:0 8px 24px rgba(20,14,50,.4);cursor:pointer;display:flex;align-items:center;gap:8px}"
-      + ".dc-fab:hover{background:#4a3ba0}"
-      + ".dc-fab .dc-live{width:7px;height:7px;border-radius:50%;background:#7ee08a;box-shadow:0 0 0 0 rgba(126,224,138,.7);animation:dc-pulse 2s infinite}"
-      + "@keyframes dc-pulse{0%{box-shadow:0 0 0 0 rgba(126,224,138,.6)}70%{box-shadow:0 0 0 7px rgba(126,224,138,0)}100%{box-shadow:0 0 0 0 rgba(126,224,138,0)}}"
-      + ".dc-stepbadge{background:rgba(255,255,255,.14);color:#fff;border:1px solid rgba(255,255,255,.28);border-radius:8px;padding:6px 11px;font:700 12px/1 'Segoe UI',Arial;cursor:pointer;display:inline-flex;align-items:center;gap:6px;margin-right:10px}"
-      + ".dc-stepbadge:hover{background:rgba(255,255,255,.24)}"
-      + ".dc-stepbadge.dc-has{background:#5C4BB9;border-color:#5C4BB9}"
+      + ".dc-fab{position:fixed;right:22px;bottom:22px;z-index:10000;display:inline-flex;align-items:center;gap:9px;height:40px;padding:0 15px;border-radius:11px;cursor:pointer;background:rgba(20,19,42,.86);color:#E7E5F2;border:1px solid rgba(255,255,255,.14);font:600 13px/1 'Segoe UI',Arial,sans-serif;letter-spacing:.01em;-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);box-shadow:0 8px 24px rgba(8,6,26,.4);transition:.16s}"
+      + ".dc-fab:hover{background:rgba(32,30,60,.92);border-color:rgba(255,255,255,.24)}"
+      + ".dc-fab svg{width:16px;height:16px;stroke:#B9B5E0;fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}"
+      + ".dc-fab .dc-count{min-width:19px;height:19px;padding:0 6px;border-radius:10px;background:#6B5CC4;color:#fff;font:700 11px/19px 'Segoe UI',Arial;text-align:center}"
+      + ".dc-fab .dc-live{width:6px;height:6px;border-radius:50%;background:#3FBF7F;box-shadow:0 0 0 3px rgba(63,191,127,.18)}"
+      + ".dc-stepbadge{display:inline-flex;align-items:center;gap:7px;height:30px;padding:0 11px;margin-right:12px;border-radius:8px;cursor:pointer;background:rgba(255,255,255,.06);color:#cfccea;border:1px solid rgba(255,255,255,.14);font:600 12px/1 'Segoe UI',Arial;transition:.15s}"
+      + ".dc-stepbadge:hover{background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.22)}"
+      + ".dc-stepbadge svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}"
+      + ".dc-stepbadge .dc-here{color:#fff;font-weight:700}"
+      + ".dc-stepbadge.dc-has{border-color:rgba(122,107,240,.55);color:#fff;background:rgba(122,107,240,.14)}"
+      + ".dc-navbadge{margin-left:auto;min-width:18px;height:18px;padding:0 5px;border-radius:9px;background:rgba(122,107,240,.92);color:#fff;font:700 10.5px/18px 'Segoe UI',Arial;text-align:center;flex:0 0 auto}"
+      + ".nav-item.dc-hascomments{box-shadow:inset 2px 0 0 #7A6BF0}"
+      + ".dc-locicon{width:12px;height:12px;stroke:#6B5CC4;fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;vertical-align:-2px;margin-right:5px;flex:0 0 auto}"
       + ".dc-panel{position:fixed;top:0;right:0;width:360px;max-width:92vw;height:100vh;z-index:10001;background:#fff;box-shadow:-14px 0 40px rgba(20,14,50,.25);display:flex;flex-direction:column;transform:translateX(100%);transition:transform .22s ease;font-family:'Segoe UI',Arial,sans-serif;color:#282A32}"
       + ".dc-panel.dc-show{transform:none}"
       + ".dc-hd{padding:14px 16px;border-bottom:1px solid #E7E6F2;display:flex;align-items:center;justify-content:space-between}"
@@ -280,12 +290,24 @@
     state.open = open == null ? !state.open : open;
     panel.classList.toggle("dc-show", state.open);
     fab.style.display = state.open ? "none" : "flex";
-    if (state.open) render();
+    if (state.open) { render(); setTimeout(bindOutside, 0); }
+    else { unbindOutside(); if (state.picking) stopPick(); }
   }
+  // close the drawer when the user clicks the preview pane (but not while
+  // placing a comment, and not on the fab / stepper badge / pins / modals)
+  function onOutside(e) {
+    if (state.picking) return;
+    var t = e.target;
+    if (panel.contains(t)) return;
+    if (t.closest && (t.closest(".dc-fab") || t.closest(".dc-stepbadge") || t.closest(".dc-pin") || t.closest(".dc-modal"))) return;
+    toggle(false);
+  }
+  function bindOutside() { document.addEventListener("mousedown", onOutside, true); }
+  function unbindOutside() { document.removeEventListener("mousedown", onOutside, true); }
   function fabCount() {
     var open = allThreads().filter(function (t) { return !t.resolved; }).length;
-    var live = MODE === "firebase" ? "<span class='dc-live'></span>" : "";
-    fab.innerHTML = live + "💬 Comments" + (open ? " (" + open + ")" : "");
+    var live = MODE === "firebase" ? "<span class='dc-live' title='Live — shared'></span>" : "";
+    fab.innerHTML = BUBBLE + "<span>Comments</span>" + (open ? "<span class='dc-count'>" + open + "</span>" : "") + live;
   }
   function updateStepBadge() {
     if (!stepBadge) return;
@@ -293,9 +315,32 @@
     var idx = slides().indexOf(active);
     var here = allThreads().filter(function (t) { return !t.resolved && slideIndexOfAnchor(t.anchor) === idx; }).length;
     var total = allThreads().filter(function (t) { return !t.resolved; }).length;
-    stepBadge.innerHTML = "💬 " + here + (total ? " · " + total + " total" : "");
+    stepBadge.innerHTML = BUBBLE + "<span class='dc-here'>" + here + "</span>" + (total ? "<span style='opacity:.55'>/ " + total + "</span>" : "");
     stepBadge.classList.toggle("dc-has", here > 0);
-    stepBadge.title = here + " open comment(s) on this slide";
+    stepBadge.title = here + " open comment(s) on this slide · " + total + " total";
+  }
+  // Highlight TOC entries that carry open comments + show a per-slide count.
+  function updateNavBadges() {
+    var items = document.querySelectorAll("#index .nav-item");
+    if (!items.length) return;
+    var counts = {};
+    allThreads().forEach(function (t) {
+      if (t.resolved) return;
+      var i = slideIndexOfAnchor(t.anchor);
+      if (i >= 0) counts[i] = (counts[i] || 0) + 1;
+    });
+    [].forEach.call(items, function (it, i) {
+      var badge = it.querySelector(".dc-navbadge");
+      var n = counts[i] || 0;
+      if (n) {
+        if (!badge) { badge = el("span", "dc-navbadge"); it.appendChild(badge); }
+        badge.textContent = n;
+        it.classList.add("dc-hascomments");
+      } else {
+        if (badge) badge.parentNode.removeChild(badge);
+        it.classList.remove("dc-hascomments");
+      }
+    });
   }
 
   // ---------- username ----------
@@ -388,7 +433,7 @@
   function openComposer(anchor) {
     toggle(true);
     var box = el("div", "dc-th");
-    box.innerHTML = "<div class='dc-anchor'>📍 " + esc(anchor.slideTitle) + "<span class='dc-loc'>" + esc(anchor.label) + "</span></div>";
+    box.innerHTML = "<div class='dc-anchor'>" + LOC + esc(anchor.slideTitle) + "<span class='dc-loc'>" + esc(anchor.label) + "</span></div>";
     var ta = el("textarea", "dc-reply"); ta.placeholder = "Write a comment…";
     var row = el("div", "dc-row");
     var save = el("button", "dc-btn dc-primary", "Comment");
@@ -416,7 +461,7 @@
 
   function render() {
     if (!listEl) return;
-    updateUserLabel(); fabCount(); updateStepBadge(); renderPins();
+    updateUserLabel(); fabCount(); updateStepBadge(); updateNavBadges(); renderPins();
     panel.querySelectorAll(".dc-seg button").forEach(function (b) {
       b.classList.toggle("dc-active", b.textContent.toLowerCase() === state.filter);
     });
@@ -430,7 +475,7 @@
 
   function renderThread(t) {
     var box = el("div", "dc-th" + (t.resolved ? " dc-resolved" : ""));
-    var a = el("div", "dc-anchor", "📍 " + esc(t.anchor ? t.anchor.slideTitle : "?") + "<span class='dc-loc'>" + esc(t.anchor ? t.anchor.label : "") + "</span>");
+    var a = el("div", "dc-anchor", LOC + esc(t.anchor ? t.anchor.slideTitle : "?") + "<span class='dc-loc'>" + esc(t.anchor ? t.anchor.label : "") + "</span>");
     a.onclick = function () { var i = slideIndexOfAnchor(t.anchor); gotoSlide(i); setTimeout(renderPins, 60); };
     box.appendChild(a);
 
