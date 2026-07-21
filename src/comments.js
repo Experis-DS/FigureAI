@@ -198,13 +198,7 @@
       + ".dc-fab svg{width:16px;height:16px;stroke:#B9B5E0;fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}"
       + ".dc-fab .dc-count{min-width:19px;height:19px;padding:0 6px;border-radius:10px;background:#6B5CC4;color:#fff;font:700 11px/19px 'Segoe UI',Arial;text-align:center}"
       + ".dc-fab .dc-live{width:6px;height:6px;border-radius:50%;background:#3FBF7F;box-shadow:0 0 0 3px rgba(63,191,127,.18)}"
-      + ".dc-stepbadge{display:inline-flex;align-items:center;gap:7px;height:30px;padding:0 11px;margin-right:12px;border-radius:8px;cursor:pointer;background:rgba(255,255,255,.06);color:#cfccea;border:1px solid rgba(255,255,255,.14);font:600 12px/1 'Segoe UI',Arial;transition:.15s}"
-      + ".dc-stepbadge:hover{background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.22)}"
-      + ".dc-stepbadge svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}"
-      + ".dc-stepbadge .dc-here{color:#fff;font-weight:700}"
-      + ".dc-stepbadge.dc-has{border-color:rgba(122,107,240,.55);color:#fff;background:rgba(122,107,240,.14)}"
       + ".dc-navbadge{margin-left:auto;min-width:18px;height:18px;padding:0 5px;border-radius:9px;background:rgba(122,107,240,.92);color:#fff;font:700 10.5px/18px 'Segoe UI',Arial;text-align:center;flex:0 0 auto}"
-      + ".nav-item.dc-hascomments{box-shadow:inset 2px 0 0 #7A6BF0}"
       + ".dc-locicon{width:12px;height:12px;stroke:#6B5CC4;fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;vertical-align:-2px;margin-right:5px;flex:0 0 auto}"
       + ".dc-panel{position:fixed;top:0;right:0;width:360px;max-width:92vw;height:100vh;z-index:10001;background:#fff;box-shadow:-14px 0 40px rgba(20,14,50,.25);display:flex;flex-direction:column;transform:translateX(100%);transition:transform .22s ease;font-family:'Segoe UI',Arial,sans-serif;color:#282A32}"
       + ".dc-panel.dc-show{transform:none}"
@@ -244,7 +238,7 @@
     var s = el("style"); s.textContent = css; document.head.appendChild(s);
   }
 
-  var fab, panel, listEl, pinLayer, stepBadge;
+  var fab, panel, listEl, pinLayer;
   function buildShell() {
     fab = el("button", "dc-fab");
     document.body.appendChild(fab);
@@ -276,14 +270,6 @@
 
     pinLayer = el("div"); document.body.appendChild(pinLayer);
     panel._add = add;
-
-    // minimal in-deck affordance: a comment badge inside the slide stepper
-    var stepper = document.querySelector(".stepper");
-    if (stepper) {
-      stepBadge = el("button", "dc-stepbadge");
-      stepBadge.onclick = function () { ensureUser(function () { toggle(true); }); };
-      stepper.insertBefore(stepBadge, stepper.firstChild);
-    }
   }
 
   function toggle(open) {
@@ -299,7 +285,7 @@
     if (state.picking) return;
     var t = e.target;
     if (panel.contains(t)) return;
-    if (t.closest && (t.closest(".dc-fab") || t.closest(".dc-stepbadge") || t.closest(".dc-pin") || t.closest(".dc-modal"))) return;
+    if (t.closest && (t.closest(".dc-fab") || t.closest(".dc-pin") || t.closest(".dc-modal"))) return;
     toggle(false);
   }
   function bindOutside() { document.addEventListener("mousedown", onOutside, true); }
@@ -308,16 +294,6 @@
     var open = allThreads().filter(function (t) { return !t.resolved; }).length;
     var live = MODE === "firebase" ? "<span class='dc-live' title='Live — shared'></span>" : "";
     fab.innerHTML = BUBBLE + "<span>Comments</span>" + (open ? "<span class='dc-count'>" + open + "</span>" : "") + live;
-  }
-  function updateStepBadge() {
-    if (!stepBadge) return;
-    var active = document.querySelector(".slide.active") || slides()[0];
-    var idx = slides().indexOf(active);
-    var here = allThreads().filter(function (t) { return !t.resolved && slideIndexOfAnchor(t.anchor) === idx; }).length;
-    var total = allThreads().filter(function (t) { return !t.resolved; }).length;
-    stepBadge.innerHTML = BUBBLE + "<span class='dc-here'>" + here + "</span>" + (total ? "<span style='opacity:.55'>/ " + total + "</span>" : "");
-    stepBadge.classList.toggle("dc-has", here > 0);
-    stepBadge.title = here + " open comment(s) on this slide · " + total + " total";
   }
   // Highlight TOC entries that carry open comments + show a per-slide count.
   function updateNavBadges() {
@@ -461,7 +437,7 @@
 
   function render() {
     if (!listEl) return;
-    updateUserLabel(); fabCount(); updateStepBadge(); updateNavBadges(); renderPins();
+    updateUserLabel(); fabCount(); updateNavBadges(); renderPins();
     panel.querySelectorAll(".dc-seg button").forEach(function (b) {
       b.classList.toggle("dc-active", b.textContent.toLowerCase() === state.filter);
     });
@@ -580,7 +556,7 @@
       initFirebase().catch(function (e) { console.warn("Firebase init failed — falling back to local mode", e); MODE = "local"; render(); });
     }
     var stage = document.getElementById("stage") || document.body;
-    new MutationObserver(function () { renderPins(); updateStepBadge(); }).observe(stage, { attributes: true, subtree: true, attributeFilter: ["class"] });
+    new MutationObserver(function () { renderPins(); updateNavBadges(); }).observe(stage, { attributes: true, subtree: true, attributeFilter: ["class"] });
     window.addEventListener("resize", renderPins);
     window.addEventListener("scroll", renderPins, true);
     setInterval(renderPins, 1200);

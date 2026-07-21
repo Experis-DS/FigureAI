@@ -116,8 +116,8 @@ if (state === 'draft') {
   const MON = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
   const bd = new Date(builtAt);
   const stampDate = `${MON[bd.getUTCMonth()]} ${bd.getUTCDate()}, ${bd.getUTCFullYear()}`;
-  const buildTag = buildNum ? ` · #${buildNum}` : '';
-  bodyInject += `<div class="deck-version-badge"><span class="dc-dot"></span>Draft<b>v${version.version}${buildTag} · ${stampDate}</b></div>\n`;
+  const rev = buildNum ? `rev ${buildNum} · ` : '';
+  bodyInject += `<div class="deck-version-badge"><span class="dc-dot"></span>Draft<b>${rev}${stampDate}</b></div>\n`;
   bodyInject += `<!-- BUILD:comment-layer -->\n<script>\n${commentsJs}\n</script>\n`;
 }
 
