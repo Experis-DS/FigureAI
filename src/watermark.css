@@ -1,0 +1,33 @@
+/* Draft-only chrome. Injected by build.js into <head> when state === "draft".
+   Published builds never receive this. */
+
+/* Diagonal corner ribbon, top-right, non-interactive. */
+.deck-draft-ribbon{
+  position:fixed; top:22px; right:-58px; z-index:9998;
+  transform:rotate(45deg);
+  background:repeating-linear-gradient(45deg,#E4572E,#E4572E 12px,#c8481f 12px,#c8481f 24px);
+  color:#fff; font:800 13px/1 "Segoe UI",Helvetica,Arial,sans-serif;
+  letter-spacing:.22em; text-transform:uppercase;
+  padding:8px 70px; box-shadow:0 6px 18px rgba(0,0,0,.35);
+  pointer-events:none; user-select:none;
+}
+
+/* Small version stamp, bottom-left. */
+.deck-version-badge{
+  position:fixed; bottom:14px; left:14px; z-index:9998;
+  background:rgba(228,87,46,.95); color:#fff;
+  font:700 11px/1 "Segoe UI",Helvetica,Arial,sans-serif;
+  letter-spacing:.06em; padding:6px 10px; border-radius:6px;
+  box-shadow:0 4px 14px rgba(0,0,0,.3); pointer-events:none; user-select:none;
+}
+
+/* Faint repeated "DRAFT" wash across the stage so screenshots read as drafts. */
+.stage-wrap::before{
+  content:""; position:fixed; inset:0; z-index:1; pointer-events:none;
+  background-image:url("data:image/svg+xml;utf8,\
+<svg xmlns='http://www.w3.org/2000/svg' width='420' height='260'>\
+<text x='0' y='140' transform='rotate(-24 0 140)' fill='rgba(228,87,46,0.06)' \
+font-family='Segoe UI, Helvetica, Arial, sans-serif' font-size='60' font-weight='800' \
+letter-spacing='8'>DRAFT</text></svg>");
+  background-repeat:repeat;
+}

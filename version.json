@@ -1,0 +1,12 @@
+{
+  "state": "draft",
+  "version": "0.1.0",
+  "created": "2026-07-20T00:00:00Z",
+  "released": null,
+  "_notes": {
+    "state": "'draft' or 'published'. Set by the draft/publish skills, not by hand.",
+    "version": "Semantic version of THIS deck (bumped on publish).",
+    "created": "ISO timestamp the current draft cycle began.",
+    "released": "ISO timestamp of publish; null while in draft."
+  }
+}
