@@ -55,6 +55,24 @@ if (fs.existsSync(commentsPath)) {
 }
 if (!Array.isArray(reviewComments)) reviewComments = [];
 
+// optional Firebase config for the live/shared comment layer (draft only).
+// If the file is missing or still holds PASTE_ placeholders, we inject nothing
+// and the comment layer falls back to the offline export/merge mode.
+let firebaseConfig = null;
+const fbPath = path.join(ROOT, 'firebase.config.json');
+if (fs.existsSync(fbPath)) {
+  try {
+    const raw = readJSON(fbPath);
+    if (raw && raw.apiKey && raw.projectId &&
+        !String(raw.apiKey).includes('PASTE') && !String(raw.projectId).includes('PASTE')) {
+      firebaseConfig = {
+        apiKey: raw.apiKey, authDomain: raw.authDomain, projectId: raw.projectId,
+        storageBucket: raw.storageBucket, messagingSenderId: raw.messagingSenderId, appId: raw.appId
+      };
+    }
+  } catch { firebaseConfig = null; }
+}
+
 // ---- token replacement (applies to both states) ----
 if (config.baseUrl) {
   html = html.split('https://YOUR-SITE-URL').join(config.baseUrl.replace(/\/$/, ''));
@@ -77,6 +95,7 @@ const headInject = state === 'draft'
 let bodyInject = `\n<!-- BUILD:runtime -->\n<script>window.__DECK__=${JSON.stringify(runtime)};</script>\n`;
 if (state === 'draft') {
   bodyInject += `<script>window.__REVIEW_COMMENTS__=${JSON.stringify(reviewComments)};</script>\n`;
+  if (firebaseConfig) bodyInject += `<script>window.__FIREBASE__=${JSON.stringify(firebaseConfig)};</script>\n`;
   bodyInject += `<div class="deck-draft-ribbon" aria-hidden="true">DRAFT</div>\n`;
   bodyInject += `<div class="deck-version-badge">DRAFT · v${version.version} · ${fmtDate(version.created)}</div>\n`;
   bodyInject += `<!-- BUILD:comment-layer -->\n<script>\n${commentsJs}\n</script>\n`;

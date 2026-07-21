@@ -1,0 +1,9 @@
+{
+  "_notes": "Shared across ALL decks (one Firebase project serves them all; comments are scoped per deck by config.json 'deckId'). These web keys are public by design (security is enforced by Firestore rules, not key secrecy). Draft builds only — never shipped in a published build.",
+  "apiKey": "AIzaSyAguX_mFW_4zB4KFLxBYg4jg9M9s_EOLu4",
+  "authDomain": "experis-microsite-comments.firebaseapp.com",
+  "projectId": "experis-microsite-comments",
+  "storageBucket": "experis-microsite-comments.firebasestorage.app",
+  "messagingSenderId": "600419082651",
+  "appId": "1:600419082651:web:dc380c4fc155983873013e"
+}
