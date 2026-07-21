@@ -511,6 +511,11 @@
           <svg class="ic-share" viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg>
           <svg class="ic-check" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>
         </div>
+        <div class="hicon" id="docsBtn" data-tip="Documents"><svg viewBox="0 0 24 24"><path d="M4 4h9l3 3h-12zM4 7h16v13H4z"/></svg></div>
+        <div class="docmenu" id="docmenu">
+          <a href="#" data-prev="assets/previews/overview.svg"><span class="ft pdf">PDF</span><span><span class="dt">This overview</span><span class="dd">This deck as a PDF · [placeholder]</span></span></a>
+          <a href="#" data-prev="assets/previews/annotation.svg"><span class="ft pdf">PDF</span><span><span class="dt">AI Annotation Services</span><span class="dd">Capabilities deck · [placeholder]</span></span></a>
+        </div>
       </div>
     </div>
   </div>
@@ -684,8 +689,8 @@
           <h1>Documents &amp; next steps</h1>
           <div class="accent-line"></div>
           <div class="dl-grid">
-            <a class="dl" href="#"><span class="ft">PDF</span><h3>This overview</h3><p>A PDF copy of this deck. [PLACEHOLDER &mdash; link]</p><div class="go">Download &rarr;</div></a>
-            <a class="dl" href="#"><span class="ft">PDF</span><h3>AI Annotation Services</h3><p>Full annotation capabilities deck. [PLACEHOLDER &mdash; export from Source Material]</p><div class="go">Download &rarr;</div></a>
+            <a class="dl" href="#" data-prev="assets/previews/overview.svg"><span class="ft">PDF</span><h3>This overview</h3><p>A PDF copy of this deck. [PLACEHOLDER &mdash; link]</p><div class="go">Download &rarr;</div></a>
+            <a class="dl" href="#" data-prev="assets/previews/annotation.svg"><span class="ft">PDF</span><h3>AI Annotation Services</h3><p>Full annotation capabilities deck. [PLACEHOLDER &mdash; export from Source Material]</p><div class="go">Download &rarr;</div></a>
           </div>
           <div class="contacts">
             <div class="contact"><span class="nm">Ryan Lynch</span><span class="ro">Experis</span><a class="em" href="mailto:ryan.lynch@experis.com">ryan.lynch@experis.com</a></div>
@@ -876,6 +881,12 @@
   initAi();
 
   /* ---- header actions ---- */
+  const docmenu=document.getElementById('docmenu');
+  if(docmenu){
+    document.getElementById('docsBtn').onclick=e=>{e.stopPropagation();docmenu.classList.toggle('open');};
+    docmenu.onclick=e=>e.stopPropagation();
+    document.addEventListener('click',()=>docmenu.classList.remove('open'));
+  }
   const shareBtn=document.getElementById('shareBtn');
   shareBtn.onclick=async()=>{
     try{await navigator.clipboard.writeText(location.href);}catch(e){}
@@ -886,7 +897,7 @@
   /* ---- cursor-following document preview ---- */
   const docPrev=document.createElement('div'); docPrev.id='docPrev'; docPrev.innerHTML='<img alt="">';
   document.body.appendChild(docPrev); const dpImg=docPrev.querySelector('img');
-  document.querySelectorAll('.dl[data-prev]').forEach(a=>{
+  document.querySelectorAll('[data-prev]').forEach(a=>{
     a.addEventListener('mouseenter',()=>{dpImg.src=a.dataset.prev;docPrev.classList.add('show');});
     a.addEventListener('mousemove',e=>{
       const pad=18,w=docPrev.offsetWidth||220,h=docPrev.offsetHeight||260;

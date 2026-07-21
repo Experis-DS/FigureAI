@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="400" viewBox="0 0 320 400" role="img" aria-label="This overview preview">
+  <defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#1100FF"/><stop offset="1" stop-color="#5C4BB9"/></linearGradient></defs>
+  <rect width="320" height="400" fill="#ffffff"/>
+  <rect x="0" y="0" width="320" height="96" fill="url(#g)"/>
+  <text x="24" y="42" fill="#ffffff" font-family="Segoe UI,Arial,sans-serif" font-size="13" font-weight="700" letter-spacing="2.5">EXPERIS</text>
+  <text x="24" y="72" fill="rgba(255,255,255,.85)" font-family="Segoe UI,Arial,sans-serif" font-size="11.5" letter-spacing="1">PDF · PREPARED FOR FIGURE AI</text>
+  <text x="24" y="150" fill="#282A32" font-family="Segoe UI,Arial,sans-serif" font-size="24" font-weight="800">This overview</text>
+  <rect x="24" y="176" width="52" height="4" rx="2" fill="#736BDE"/>
+  <g fill="#E7E6F2">
+    <rect x="24" y="210" width="272" height="9" rx="4.5"/>
+    <rect x="24" y="230" width="272" height="9" rx="4.5"/>
+    <rect x="24" y="250" width="210" height="9" rx="4.5"/>
+    <rect x="24" y="284" width="272" height="9" rx="4.5"/>
+    <rect x="24" y="304" width="248" height="9" rx="4.5"/>
+    <rect x="24" y="324" width="272" height="9" rx="4.5"/>
+    <rect x="24" y="344" width="180" height="9" rx="4.5"/>
+  </g>
+</svg>

@@ -116,8 +116,10 @@ if (state === 'draft') {
   const MON = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
   const bd = new Date(builtAt);
   const stampDate = `${MON[bd.getUTCMonth()]} ${bd.getUTCDate()}, ${bd.getUTCFullYear()}`;
-  const rev = buildNum ? `rev ${buildNum} · ` : '';
-  bodyInject += `<div class="deck-version-badge"><span class="dc-dot"></span>Draft<b>${rev}${stampDate}</b></div>\n`;
+  // Display version climbs 0.1 per commit from a 5.0 floor, so it reads ~V5.1 and up.
+  const VBASE = 5.0;
+  const vstr = 'V' + (VBASE + 0.1 * (Number(buildNum) || 0)).toFixed(1);
+  bodyInject += `<div class="deck-version-badge"><span class="dc-dot"></span>Draft<b>${vstr} · ${stampDate}</b></div>\n`;
   bodyInject += `<!-- BUILD:comment-layer -->\n<script>\n${commentsJs}\n</script>\n`;
 }
 
