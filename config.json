@@ -7,5 +7,6 @@
   "_notes": {
     "baseUrl": "Public GitHub Pages URL for this deck. Used to rewrite Open Graph/share tags at build time.",
     "password": "Client-side gate only. This is NOT security (view-source reveals it). Do not rely on it for confidential content."
-  }
+  },
+  "templateVersion": "0.3.0"
 }

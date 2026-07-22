@@ -3,7 +3,7 @@
 This repo builds Experis-branded microsite decks with two states: **Draft** and
 **Published**. The authoritative, tool-agnostic workflow is in **`BUILD.md`** — read it
 first and follow it. This file is the adapter so Copilot/Cursor behave the same way the
-Claude skills (`skills/microsite-draft`, `skills/microsite-publish`) do.
+Claude skills (`skills/draft-microsite`, `skills/publish-microsite`, `skills/push-template`) do.
 
 ## Golden rules
 - **`build.js` owns state.** Never hand-edit the DRAFT watermark or the comment layer

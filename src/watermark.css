@@ -3,19 +3,6 @@
    Design intent: restrained, editorial — muted graphite surfaces, a single
    understated amber status keyline, fine letter-spaced type. No bright fills. */
 
-/* Corner status ribbon, top-right, non-interactive. */
-.deck-draft-ribbon{
-  position:fixed; top:19px; right:-54px; z-index:9998;
-  transform:rotate(45deg);
-  background:#17162a; color:#E7E5F2;
-  border-top:1px solid rgba(255,255,255,.10);
-  border-bottom:1px solid rgba(201,162,39,.55);   /* muted amber = "draft" status cue */
-  font:600 10px/1 "Segoe UI",Helvetica,Arial,sans-serif;
-  letter-spacing:.34em; text-transform:uppercase; text-indent:.34em;
-  padding:7px 62px; box-shadow:0 10px 26px rgba(6,4,20,.42);
-  pointer-events:none; user-select:none;
-}
-
 /* Version / build stamp, bottom-left. */
 .deck-version-badge{
   position:fixed; bottom:16px; left:16px; z-index:9998;

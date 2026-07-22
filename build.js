@@ -67,6 +67,7 @@ if (!Array.isArray(reviewComments)) reviewComments = [];
 // If the file is missing or still holds PASTE_ placeholders, we inject nothing
 // and the comment layer falls back to the offline export/merge mode.
 let firebaseConfig = null;
+let ga4Id = null;
 const fbPath = path.join(ROOT, 'firebase.config.json');
 if (fs.existsSync(fbPath)) {
   try {
@@ -78,7 +79,9 @@ if (fs.existsSync(fbPath)) {
         storageBucket: raw.storageBucket, messagingSenderId: raw.messagingSenderId, appId: raw.appId
       };
     }
-  } catch { firebaseConfig = null; }
+    // GA4 analytics is independent of the comment layer and ships in BOTH states.
+    if (raw && raw.measurementId && !String(raw.measurementId).includes('PASTE')) ga4Id = raw.measurementId;
+  } catch { firebaseConfig = null; ga4Id = null; }
 }
 
 // ---- token replacement (applies to both states) ----
@@ -112,7 +115,6 @@ let bodyInject = `\n<!-- BUILD:runtime -->\n<script>window.__DECK__=${JSON.strin
 if (state === 'draft') {
   bodyInject += `<script>window.__REVIEW_COMMENTS__=${JSON.stringify(reviewComments)};</script>\n`;
   if (firebaseConfig) bodyInject += `<script>window.__FIREBASE__=${JSON.stringify(firebaseConfig)};</script>\n`;
-  bodyInject += `<div class="deck-draft-ribbon" aria-hidden="true">DRAFT</div>\n`;
   const MON = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
   const bd = new Date(builtAt);
   const stampDate = `${MON[bd.getUTCMonth()]} ${bd.getUTCDate()}, ${bd.getUTCFullYear()}`;
@@ -123,7 +125,13 @@ if (state === 'draft') {
   bodyInject += `<!-- BUILD:comment-layer -->\n<script>\n${commentsJs}\n</script>\n`;
 }
 
-html = html.replace('</head>', `${headInject}</head>`);
+// GA4 analytics (both states) — injected only when a measurementId is configured.
+const gaInject = ga4Id
+  ? `\n<!-- GA4 -->\n<script async src="https://www.googletagmanager.com/gtag/js?id=${ga4Id}"></script>\n`
+    + `<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','${ga4Id}');</script>\n`
+  : '';
+
+html = html.replace('</head>', `${headInject}${gaInject}</head>`);
 html = html.replace('</body>', `${bodyInject}</body>`);
 
 // ---- write dist ----
@@ -138,7 +146,7 @@ if (fs.existsSync(path.join(ROOT, 'downloads'))) {
 fs.writeFileSync(path.join(outDir, 'version.json'), JSON.stringify(version, null, 2));
 
 console.log(`  Wrote ${path.relative(ROOT, outDir)}/index.html`);
-console.log(`  Watermark: ${state === 'draft' ? 'ON' : 'off'}   Comment layer: ${state === 'draft' ? `ON (${reviewComments.length} merged threads)` : 'off'}\n`);
+console.log(`  Watermark: ${state === 'draft' ? 'ON' : 'off'}   Comments: ${state === 'draft' ? (firebaseConfig ? 'Firebase live' : 'local') : 'off'}   GA4: ${ga4Id ? 'on (' + ga4Id + ')' : 'off'}\n`);
 
 // ---- helpers ----
 function fmtDate(iso) {
