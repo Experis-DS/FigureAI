@@ -712,9 +712,9 @@
             <div>
               <p class="lead" style="max-width:520px">We deliver qualified people, ready for the work. Survey-fed candidate lists feed a continuous flow of vetted candidates, scaled to exactly the numbers Figure AI needs, when they&rsquo;re needed.</p>
               <div class="fq" style="margin-top:20px">
-                <div class="fq-head"><span class="fq-q" id="fqQ">Q1</span><span class="fq-sub">demand, scaled to Figure AI&rsquo;s needs each quarter<span class="roll-dot"></span></span></div>
+                <div class="fq-head"><span class="fq-q" id="fqQ">2026</span><span class="fq-sub">demand, scaling with Figure AI through 2029<span class="roll-dot"></span></span></div>
                 <div class="fq-grid" id="fqGrid" aria-hidden="true"></div>
-                <div class="roll-note">Illustrative: the pipeline flexes up and down as demand shifts.</div>
+                <div class="roll-note">Illustrative: modeled to grow year over year through 2029.</div>
               </div>
             </div>
             <div class="grid" style="grid-template-columns:1fr 1fr;gap:12px">
@@ -741,7 +741,7 @@
             <div class="anno-card"><div class="anno-hd"><span class="anno-ic"><svg viewBox="0 0 24 24"><path d="M12 3l7 3v5c0 4.4-3 7.4-7 9-4-1.6-7-4.6-7-9V6z"/><path d="M9.3 12l1.8 1.8 3.6-3.6"/></svg></span><h3>Security &amp; Legal</h3></div><p>Sensitive-content and compliance review.</p></div>
           </div>
           <div class="grid c2" style="margin-top:16px">
-            <div class="callout soft" style="margin-top:0"><div class="t">Industries served<span>Robotics, and Reality Labs: Wearables &amp; AR/VR, including egocentric, first-person data.</span></div></div>
+            <div class="callout soft" style="margin-top:0"><div class="t">Industries served<span>Robotics, Wearables, AR/VR, including egocentric, first-person data.</span></div></div>
             <div class="callout soft" style="margin-top:0"><div class="t">Measured against predefined targets<span>We operate to defined KPIs (throughput, accuracy, turnaround, consistency), agreed up front and reported against.</span></div></div>
           </div>
         </section>
@@ -1058,24 +1058,33 @@
     a.addEventListener('mouseleave',()=>docPrev.classList.remove('show'));
   });
 
-  /* ---- Fill the Funnel: quarterly demand pictograph (illustrative, shifting) ---- */
+  /* ---- Fill the Funnel: demand growth pictograph — modeled up-only through 2029 ---- */
   (function(){
     var grid=document.getElementById('fqGrid'), ql=document.getElementById('fqQ'); if(!grid) return;
     var TOTAL=60, PERSON="<svg viewBox='0 0 24 24'><path d='M12 12a5 5 0 1 0 0-10 5 5 0 0 0 0 10zM3 22a9 9 0 0 1 18 0z'/></svg>";
     var dots=[];
     for(var i=0;i<TOTAL;i++){var d=document.createElement('span');d.className='fq-dot';d.innerHTML=PERSON;grid.appendChild(d);dots.push(d);}
-    var quarters=[['Q1',34],['Q2',52],['Q3',41],['Q4',60]], qi=0, prev=0;
-    function apply(){
-      var q=quarters[qi], n=q[1];
-      ql.textContent=q[0];
+    var years=[['2026',18],['2027',32],['2028',46],['2029',60]];  /* strictly increasing */
+    var step=0, prev=0, playedActive=false;
+    function render(n){
       dots.forEach(function(d,i){
         var on=i<n;
-        setTimeout(function(){ d.classList.toggle('on',on); d.classList.toggle('hi', on && i>=prev && n>prev); }, Math.abs(i-n)*7);
+        setTimeout(function(){ d.classList.toggle('on',on); d.classList.toggle('hi', on && i>=prev); }, Math.max(0,(i-prev))*9);
       });
-      prev=n; qi=(qi+1)%quarters.length;
+      prev=n;
     }
-    apply();
-    setInterval(function(){ var s=grid.closest('.slide'); if(s&&!s.classList.contains('active'))return; apply(); }, 2600);
+    function advance(){
+      var y=years[step]; ql.textContent=y[0]; render(y[1]);
+      if(step<years.length-1) step++;    /* climb, then hold at 2029 (never shrinks) */
+    }
+    function replay(){ step=0; prev=0; dots.forEach(function(d){d.classList.remove('on','hi');}); advance(); }
+    replay();
+    /* step up while the slide is open; replay the climb each time the slide is revisited */
+    setInterval(function(){
+      var s=grid.closest('.slide'), active=!(s&&!s.classList.contains('active'));
+      if(active){ if(!playedActive){ replay(); playedActive=true; } else { advance(); } }
+      else { playedActive=false; }
+    }, 1300);
   })();
 
   go(0);
