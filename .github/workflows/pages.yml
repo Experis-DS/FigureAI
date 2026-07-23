@@ -32,12 +32,16 @@ jobs:
           node-version: "20"
       - name: Build
         run: node build.js
-      - name: Generate downloadable deck PDF (best-effort)
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Generate downloadable deck PDF
+        continue-on-error: true
         run: |
-          pip install playwright Pillow >/dev/null 2>&1 || pip install playwright Pillow --break-system-packages >/dev/null 2>&1 || true
-          python -m playwright install --with-deps chromium >/dev/null 2>&1 || true
+          pip3 install playwright Pillow
+          python3 -m playwright install --with-deps chromium
           mkdir -p dist/downloads
-          python tools/refresh-self-pdf.py dist dist/downloads/FigureAI-Overview.pdf || echo "PDF generation skipped"
+          python3 tools/refresh-self-pdf.py dist dist/downloads/FigureAI-Overview.pdf
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:

@@ -6,7 +6,7 @@
 import asyncio, sys, os, tempfile
 from playwright.async_api import async_playwright
 from PIL import Image
-SITE=sys.argv[1].rstrip("/"); OUT=sys.argv[2]
+SITE=os.path.abspath(sys.argv[1].rstrip("/")); OUT=sys.argv[2]
 async def main():
     tmp=tempfile.mkdtemp()
     async with async_playwright() as p:
