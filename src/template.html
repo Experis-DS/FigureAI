@@ -353,6 +353,8 @@
     background:rgba(17,0,255,.06);border:1px solid var(--line);font-size:12.5px;color:var(--gray);line-height:1.5}
   .pdf-note b{color:var(--ink);font-weight:700}
   body.is-file .pdf-note{display:block}
+  .pdf-badge{display:none}
+  body.is-file .pdf-badge{display:block;position:fixed;top:12px;left:50%;transform:translateX(-50%);z-index:10000;background:rgba(26,21,51,.92);color:#fff;font:600 11px/1 'Segoe UI',Arial;letter-spacing:.02em;padding:7px 14px;border-radius:20px;border:1px solid rgba(255,255,255,.18);box-shadow:0 8px 24px rgba(8,6,30,.45);white-space:nowrap;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
   .dl-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:6px}
   .dl{display:block;text-decoration:none;border-radius:14px;padding:22px 20px;transition:.18s;color:inherit;
     background:#fff;border:1px solid var(--line);box-shadow:0 8px 22px rgba(60,40,120,.08)}
@@ -588,6 +590,7 @@
   <source src="assets/brand/glass-x.mp4" type="video/mp4"></video></div>
 <div id="scrim"></div>
 <div id="deck-bg"></div>
+<div class="pdf-badge">PDF copy &middot; visit experis-ds.github.io/FigureAI for the interactive version</div>
 
 <!-- PASSWORD GATE -->
 <div class="gate" id="gate">
@@ -618,7 +621,7 @@
         <div class="hicon" id="docsBtn" data-tip="Documents"><svg viewBox="0 0 24 24"><path d="M4 4h9l3 3h-12zM4 7h16v13H4z"/></svg></div>
         <div class="docmenu" id="docmenu">
           <a href="downloads/ManpowerGroup-Overview.pdf" target="_blank" download data-prev="assets/previews/mpg-overview.jpg"><span class="ft pdf">PDF</span><span><span class="dt">ManpowerGroup Overview</span><span class="dd">Service capabilities &amp; brands</span></span></a>
-          <a href="#" data-prev="assets/previews/overview.svg"><span class="ft pdf">PDF</span><span><span class="dt">This overview</span><span class="dd">This deck as a PDF · [placeholder]</span></span></a>
+          <a href="downloads/FigureAI-Overview.pdf" target="_blank" download data-prev="assets/previews/overview.svg"><span class="ft pdf">PDF</span><span><span class="dt">This overview</span><span class="dd">This deck as a static PDF</span></span></a>
         </div>
       </div>
     </div>
@@ -791,8 +794,8 @@
               <div class="bt">Talent Solutions</div>
               <div class="bs">Sourcing and workforce at scale, how we fill the funnel.</div>
               <div class="reveal"><ul>
-                <li>RPO: end-to-end recruitment, source &amp; screen</li>
-                <li>MSP: contingent workforce &amp; direct sourcing</li>
+                <li>Talent Acquisition as a Service</li>
+                <li>Solving the <b style="color:var(--violet)">&ldquo;Slop Problem&rdquo;</b>: precision hiring of scarce, specialized engineers (Mechanical Design, Whole Body Control, Perception) at scale.</li>
                 <li>Global workforce programs across 80+ countries</li>
                 <li>Career &amp; talent management</li>
               </ul></div>
@@ -819,9 +822,10 @@
           <span class="kicker">Take it with you</span>
           <h1>Documents &amp; next steps</h1>
           <div class="accent-line"></div>
+          <div class="pdf-note"><b>Viewing the PDF copy?</b> The download and comment buttons aren&rsquo;t interactive here. Visit <b>experis-ds.github.io/FigureAI</b> for the full, interactive version.</div>
           <div class="dl-grid">
             <a class="dl" href="downloads/ManpowerGroup-Overview.pdf" target="_blank" download data-prev="assets/previews/mpg-overview.jpg"><span class="ft">PDF</span><h3>ManpowerGroup Overview</h3><p>Service capabilities across the family of brands.</p><div class="go">Download &rarr;</div></a>
-            <a class="dl" href="#" data-prev="assets/previews/overview.svg"><span class="ft">PDF</span><h3>This overview</h3><p>A PDF copy of this deck. [PLACEHOLDER: link]</p><div class="go">Download &rarr;</div></a>
+            <a class="dl" href="downloads/FigureAI-Overview.pdf" target="_blank" download data-prev="assets/previews/overview.svg"><span class="ft">PDF</span><h3>This overview</h3><p>A static PDF copy of this deck.</p><div class="go">Download &rarr;</div></a>
           </div>
           <div class="contacts">
             <div class="contact"><span class="nm">Julia Gray</span><span class="ro">ManpowerGroup</span><a class="em" href="mailto:julia.gray@manpowergroup.com">julia.gray@manpowergroup.com</a></div>
@@ -839,7 +843,7 @@
             <h1 class="cl-head">Fund the funnel.<br>Own the annotation.<br><span>Grow the partnership.</span></h1>
             <div class="cl-quote">
               <div class="cl-qtext">
-                <p>&ldquo;We can help with data collection today &mdash; but the durable value we bring is a vetted, independent annotation practice and embedded AI engineering. That&rsquo;s the partnership we want to build with Figure.&rdquo;</p>
+                <p>&ldquo;We can help with data collection today &mdash; but the durable value we bring is a vetted, independent annotation practice and embedded AI engineering. That&rsquo;s the partnership we want to build with Figure AI.&rdquo;</p>
                 <div class="cl-by"><span class="cl-nm">Experis</span><span class="cl-ro">Prepared for Figure AI</span></div>
               </div>
             </div>
@@ -855,7 +859,7 @@
             <div class="cl-quote">
               <div class="cl-pcol"><img class="cl-portrait" src="assets/brand/Kye-cutout.png" alt="Kye Mitchell" onerror="this.style.display='none'"></div>
               <div class="cl-qtext">
-                <p>&ldquo;We can help with data collection today, but the durable value we bring is a vetted, independent annotation practice and embedded AI engineering. That&rsquo;s the partnership we want to build with Figure.&rdquo;</p>
+                <p>&ldquo;We can help with data collection today, but the durable value we bring is a vetted, independent annotation practice and embedded AI engineering. That&rsquo;s the partnership we want to build with Figure AI.&rdquo;</p>
                 <div class="cl-by"><span class="cl-nm">Kye Mitchell</span><span class="cl-ro">Global Leader, Experis</span></div>
               </div>
             </div>
