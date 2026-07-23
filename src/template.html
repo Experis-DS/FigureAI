@@ -599,7 +599,6 @@
     <input id="pw" type="password" placeholder="Access code" autocomplete="off" spellcheck="false">
     <button class="enter" id="enterBtn">Enter</button>
     <div class="err" id="err">Incorrect code. Try again.</div>
-    <button class="bypass" id="bypassBtn">Skip for now &rarr;</button>
   </div>
 </div>
 
@@ -867,7 +866,6 @@
   if(location.protocol==="file:")document.body.classList.add("is-file");
   /* ---- password gate ---- */
   const PASSWORD="robots!";  /* access code (case-insensitive) */
-  const SHOW_BYPASS=true;    /* POC: show a "Skip for now" button on the gate. Set false for the client build. */
   const gate=document.getElementById('gate'), app=document.getElementById('app');
   const pw=document.getElementById('pw'), err=document.getElementById('err'), prompt=document.getElementById('prompt');
   let unlocked=false;
@@ -892,8 +890,6 @@
   document.getElementById('enterBtn').onclick=tryEnter;
   pw.addEventListener('keydown',e=>{if(e.key==='Enter')tryEnter(); else err.classList.remove('show');});
   setTimeout(()=>pw.focus(),900);
-  const bypassBtn=document.getElementById('bypassBtn');
-  if(SHOW_BYPASS){ bypassBtn.onclick=unlock; } else { bypassBtn.style.display='none'; }
 
   /* ---- deck nav ---- */
   const slides=[...document.querySelectorAll('.slide')];
