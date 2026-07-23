@@ -1,8 +1,8 @@
 {
-  "state": "draft",
-  "version": "0.1.0",
+  "state": "published",
+  "version": "1.0.0",
   "created": "2026-07-20T00:00:00Z",
-  "released": null,
+  "released": "2026-07-23T00:00:00Z",
   "_notes": {
     "state": "'draft' or 'published'. Set by the draft/publish skills, not by hand.",
     "version": "Semantic version of THIS deck (bumped on publish).",
