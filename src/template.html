@@ -494,6 +494,9 @@
   .anno-card .anno-hd{display:flex;align-items:center;gap:11px}
   .anno-ic{flex:0 0 auto;display:flex;align-items:center;justify-content:center}
   .anno-ic svg{width:22px;height:22px;stroke:var(--violet);fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+  .qc-lab{margin-top:11px;font-size:10px;font-weight:800;letter-spacing:.9px;text-transform:uppercase;color:var(--gray)}
+  .qc-row{margin-top:7px}
+  .qc{display:inline-block;font-size:10.5px;font-weight:700;color:var(--violet);background:rgba(115,107,222,.09);border:1px solid #ece9f6;padding:4px 10px;border-radius:20px;margin:0 6px 7px 0}
   .anno-card h3{font-size:15px;margin:0;letter-spacing:-.2px}
   .anno-card p{font-size:12px;color:var(--gray);line-height:1.5;margin-top:8px}
   /* phased approach — workflow / mind-map (branching = more ways to work together) */
@@ -744,6 +747,9 @@
             <div class="callout soft" style="margin-top:0"><div class="t">Industries served<span>Robotics, Wearables, AR/VR, including egocentric, first-person data.</span></div></div>
             <div class="callout soft" style="margin-top:0"><div class="t">Measured against predefined targets<span>We operate to defined KPIs (throughput, accuracy, turnaround, consistency), agreed up front and reported against.</span></div></div>
           </div>
+          <div class="callout soft" style="margin-top:14px"><div class="t">Synthetic data, built and QA&rsquo;d by our MLEs<span>Our engineers create, QA, and manage synthetic data to train and test models: filling data gaps, covering edge cases, avoiding sensitive user data, and cutting cost. It works best paired with real-world data, where quality matters more than volume.</span></div></div>
+          <div class="qc-lab">Synthetic-data quality checks</div>
+          <div class="qc-row"><span class="qc">Content validation</span><span class="qc">Instruction compliance</span><span class="qc">Hallucination detection</span><span class="qc">Bias &amp; fairness</span><span class="qc">Diversity analysis</span><span class="qc">Safety</span><span class="qc">Benchmark &amp; acceptance testing</span></div>
         </section>
 
         <!-- 5 PHASE 3 — AI ENGINEERING -->
